@@ -4,7 +4,10 @@ import {
     reqCategorys,
     reqShops,
     reqUserInfo,
-    reqlogOut
+    reqlogOut,
+    reqGoods,
+    reqInfo,
+    reqRatins
 } from '../api'
 
 import {
@@ -12,7 +15,11 @@ import {
     RECEIVE_CATEGORYS,
     RECEIVE_SHOPS,
     RECEIVE_USER_INFO,
-    RESET_USER_INFO
+    RESET_USER_INFO,
+    RECEIVE_GOODS,
+    RECEIVE_RATINGS,
+    RECEIVE_INFO
+
 } from './mutations-types'
 
 export default {
@@ -57,18 +64,42 @@ export default {
         commit(RECEIVE_USER_INFO, { userInfo })
     },
     // 异步获取用户信息
-    async getUserInfo ({commit}) {
+    async getUserInfo({ commit }) {
         const result = await reqUserInfo()
         if (result.code === 0) {
-          const userInfo = result.data
-          commit(RECEIVE_USER_INFO, {userInfo})
+            const userInfo = result.data
+            commit(RECEIVE_USER_INFO, { userInfo })
         }
-      },
-      // 退出登录
-    async getLogOut({commit}) {
+    },
+    // 退出登录
+    async getLogOut({ commit }) {
         const result = await reqlogOut()
-        if(result.code ===0 ) {
+        if (result.code === 0) {
             commit(RESET_USER_INFO)
+        }
+    },
+    // 商家详细信息
+    async getGoods({ commit }) {
+        const result = await reqGoods()
+        if (result.code == 0) {
+            const goods = result.data
+            commit(RECEIVE_GOODS, { goods })
+        }
+    },
+    // 商家评价信息
+    async getInfo({ commit }) {
+        const result = await reqInfo()
+        if (result.code == 0) {
+            const info = result.data
+            commit(RECEIVE_INFO, { info })
+        }
+    },
+    // 商家点餐
+    async getratings({ commit }) {
+        const result = await reqRatins()
+        if (result.code == 0) {
+            const ratings = result.data
+            commit(RECEIVE_RATINGS, { ratings })
         }
     }
 }
